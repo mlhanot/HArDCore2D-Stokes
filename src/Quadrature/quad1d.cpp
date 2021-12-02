@@ -29,12 +29,12 @@ QuadRuleEdge::~QuadRuleEdge(){
 
 size_t QuadRuleEdge::nq() {
     return _npts;
-};
+}
 double QuadRuleEdge::xq(size_t i) { return _xr[i]; }
 double QuadRuleEdge::yq(size_t i) { return _yr[i]; }
 double QuadRuleEdge::wq(size_t i) {
     return _rule->wq(i)*_length;
-};
+}
 void QuadRuleEdge::setup(double x[], double y[]) {
     _xr = new double[_npts];
     _yr = new double[_npts];

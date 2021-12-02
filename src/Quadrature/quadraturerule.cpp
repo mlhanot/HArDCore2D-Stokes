@@ -90,6 +90,6 @@ namespace HArDCore2D
         quad.emplace_back(quadEdge.xq(iqn), quadEdge.yq(iqn), quadEdge.wq(iqn));
     }
     return quad;
-};
+}
 
 } // End namespace HArDCore2D

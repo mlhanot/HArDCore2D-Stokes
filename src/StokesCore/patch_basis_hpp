@@ -1,0 +1,57 @@
+228,229c228,229
+<     typedef typename BasisType::CurlValue CurlValue;
+<     typedef typename BasisType::DivergenceValue DivergenceValue;
+---
+>     typedef VectorRd CurlValue;
+>     typedef double DivergenceValue;
+1054,1055c1054
+< 		       Divergence,
+<            Trace
+---
+> 		       Divergence
+1070c1069
+<   }
+---
+>   };
+1386c1385
+< 
+---
+>   
+1413,1422d1411
+<     #if __cplusplus > 201703L // std>c++17 
+<     template<typename BasisType,template<typename> typename FamilyType> requires std::is_base_of<Family<BasisType>,FamilyType<BasisType>>::value
+<     static boost::multi_array<typename detail::basis_evaluation_traits<FamilyType<BasisType>, BasisFunction>::ReturnValue, 2>
+<     compute(
+< 	    const FamilyType<BasisType> & basis, ///< The family
+< 	    const QuadratureRule & quad      ///< The quadrature rule
+< 	    )
+<     { // included to extend support as no specialization of basis_evaluation_traits is required 
+<       typedef detail::basis_evaluation_traits<FamilyType<BasisType>, BasisFunction> traits;
+<     #else
+1431d1419
+<     #endif // std>c++17
+1457,1465d1444
+<     #if __cplusplus > 201703L // std>c++17 
+<     template<typename BasisType,size_t N,template<typename,size_t> typename FamilyType> requires std::is_base_of<TensorizedVectorFamily<BasisType, N>,FamilyType<BasisType,N>>::value
+<     static boost::multi_array<typename detail::basis_evaluation_traits<FamilyType<BasisType, N>, BasisFunction>::ReturnValue, 2>
+<     compute(
+<         const FamilyType<BasisType, N> &basis, ///< The family
+<         const QuadratureRule &quad      ///< The quadrature rule
+<     )
+< 
+<     #else
+1472d1450
+<     #endif // std>c++17
+1492,1499d1469
+<     #if __cplusplus > 201703L // std>c++17 
+<     template<typename BasisType,size_t N,template<typename,size_t> typename FamilyType> requires std::is_base_of<MatrixFamily<BasisType, N>,FamilyType<BasisType,N>>::value 
+<     static boost::multi_array<typename detail::basis_evaluation_traits<FamilyType<BasisType, N>, BasisFunction>::ReturnValue, 2>
+<     compute(
+<         const FamilyType<BasisType, N> &basis, ///< The family
+<         const QuadratureRule &quad      ///< The quadrature rule
+<     )
+<     #else
+1506d1475
+<     #endif // std>c++17
+1508d1476
+<       std::cout<<"Matrix called"<<std::endl;

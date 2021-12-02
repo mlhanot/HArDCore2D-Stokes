@@ -121,12 +121,12 @@ private:
      double _lambda;
 };
 
-inline size_t TestCase::get_deg_diff() { return _deg_diff; };
-inline double TestCase::get_lambda() { return _lambda; };
+inline size_t TestCase::get_deg_diff() { return _deg_diff; }
+inline double TestCase::get_lambda() { return _lambda; }
 
-inline bool TestCase::is_reac_const() { return reac_const; };
-inline bool TestCase::is_div_advec_zero() { return div_advec_zero; };
-inline bool TestCase::is_div_advec_const() { return div_advec_const; };
+inline bool TestCase::is_reac_const() { return reac_const; }
+inline bool TestCase::is_div_advec_zero() { return div_advec_zero; }
+inline bool TestCase::is_div_advec_const() { return div_advec_const; }
 
      //@}
 

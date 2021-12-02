@@ -1,0 +1,4 @@
+#ZipXY fields together
+yval = inputs[0].PointData['solution']
+xval = inputs[1].PointData['solution']
+output.PointData.append(make_vector(xval,yval),"u")

@@ -58,5 +58,5 @@ private:
 };
 /*@}*/
 
-};     // end namespace HArDCore2D
+}     // end namespace HArDCore2D
 #endif /* IMPORT_MESH_HPP */

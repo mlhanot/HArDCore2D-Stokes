@@ -71,4 +71,4 @@ void QuadRuleTriangle::setup(double xV[], double yV[]) {
     //    physical triangle.
     reference_to_physical_t3(t, _npts, _xy, _xyphys);
     area = triangle_area(t);
-};
+}

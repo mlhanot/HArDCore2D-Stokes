@@ -225,8 +225,8 @@ namespace HArDCore2D
   public:
     typedef typename BasisType::FunctionValue FunctionValue;
     typedef typename BasisType::GradientValue GradientValue;
-    typedef VectorRd CurlValue;
-    typedef double DivergenceValue;
+    typedef typename BasisType::CurlValue CurlValue;
+    typedef typename BasisType::DivergenceValue DivergenceValue;
 
     typedef typename BasisType::GeometricSupport GeometricSupport;
     
@@ -1051,7 +1051,8 @@ namespace HArDCore2D
 		       Function,
 		       Gradient,
 		       Curl,
-		       Divergence
+		       Divergence,
+           Trace
   };
 
   /// Takes an array B_quad of values at quadrature nodes and applies the function F to all of them. F must take inValue and return outValue. The function must be called with outValue as template argument: transform_values_quad<outValue>(...)
@@ -1066,7 +1067,7 @@ namespace HArDCore2D
     std::transform( B_quad.origin(), B_quad.origin() + B_quad.num_elements(), transformed_B_quad.origin(), F);
 
     return transformed_B_quad;
-  };
+  }
 
 
   /// Function to symmetrise a matrix (useful together with transform_values_quad)
@@ -1382,7 +1383,7 @@ namespace HArDCore2D
 
 
   //-----------------------------------EVALUATE_QUAD--------------------------------------
-  
+
     /// Evaluate a basis at quadrature nodes. 'BasisFunction' (=Function, Gradient, Curl or Divergence) determines what kind of value we want to evaluate.
   template<BasisFunctionE BasisFunction>
   struct evaluate_quad {
@@ -1409,6 +1410,16 @@ namespace HArDCore2D
     }
 
      /// Evaluate a 'Family' of functions at quadrature nodes (optimised compared the generic basis evaluation, to avoid computing several times the ancestor basis at the quadrature nodes)
+    #if __cplusplus > 201703L // std>c++17 
+    template<typename BasisType,template<typename> typename FamilyType> requires std::is_base_of<Family<BasisType>,FamilyType<BasisType>>::value
+    static boost::multi_array<typename detail::basis_evaluation_traits<FamilyType<BasisType>, BasisFunction>::ReturnValue, 2>
+    compute(
+	    const FamilyType<BasisType> & basis, ///< The family
+	    const QuadratureRule & quad      ///< The quadrature rule
+	    )
+    { // included to extend support as no specialization of basis_evaluation_traits is required 
+      typedef detail::basis_evaluation_traits<FamilyType<BasisType>, BasisFunction> traits;
+    #else
     template<typename BasisType>
     static boost::multi_array<typename detail::basis_evaluation_traits<Family<BasisType>, BasisFunction>::ReturnValue, 2>
     compute(
@@ -1417,6 +1428,7 @@ namespace HArDCore2D
 	    )
     {
       typedef detail::basis_evaluation_traits<Family<BasisType>, BasisFunction> traits;
+    #endif // std>c++17
 
       boost::multi_array<typename traits::ReturnValue, 2>
 	      basis_quad( boost::extents[basis.dimension()][quad.size()] );
@@ -1442,12 +1454,22 @@ namespace HArDCore2D
     }
     
     /// Evaluate a tensorized family at quadrature nodes (optimised compared the generic basis evaluation, to avoid computing several times the ancestor basis at the quadrature nodes)
+    #if __cplusplus > 201703L // std>c++17 
+    template<typename BasisType,size_t N,template<typename,size_t> typename FamilyType> requires std::is_base_of<TensorizedVectorFamily<BasisType, N>,FamilyType<BasisType,N>>::value
+    static boost::multi_array<typename detail::basis_evaluation_traits<FamilyType<BasisType, N>, BasisFunction>::ReturnValue, 2>
+    compute(
+        const FamilyType<BasisType, N> &basis, ///< The family
+        const QuadratureRule &quad      ///< The quadrature rule
+    )
+
+    #else
     template <typename BasisType, size_t N>
     static boost::multi_array<typename detail::basis_evaluation_traits<TensorizedVectorFamily<BasisType, N>, BasisFunction>::ReturnValue, 2>
     compute(
         const TensorizedVectorFamily<BasisType, N> &basis, ///< The family
         const QuadratureRule &quad      ///< The quadrature rule
     )
+    #endif // std>c++17
     {
       typedef detail::basis_evaluation_traits<TensorizedVectorFamily<BasisType, N>, BasisFunction> traits;
 
@@ -1467,13 +1489,23 @@ namespace HArDCore2D
     }
   
     /// Evaluate a Matrix family at quadrature nodes (optimised compared the generic basis evaluation, to avoid computing several times the ancestor basis at the quadrature nodes)
+    #if __cplusplus > 201703L // std>c++17 
+    template<typename BasisType,size_t N,template<typename,size_t> typename FamilyType> requires std::is_base_of<MatrixFamily<BasisType, N>,FamilyType<BasisType,N>>::value 
+    static boost::multi_array<typename detail::basis_evaluation_traits<FamilyType<BasisType, N>, BasisFunction>::ReturnValue, 2>
+    compute(
+        const FamilyType<BasisType, N> &basis, ///< The family
+        const QuadratureRule &quad      ///< The quadrature rule
+    )
+    #else
     template <typename BasisType, size_t N>
     static boost::multi_array<typename detail::basis_evaluation_traits<MatrixFamily<BasisType, N>, BasisFunction>::ReturnValue, 2>
     compute(
         const MatrixFamily<BasisType, N> &basis, ///< The family
         const QuadratureRule &quad      ///< The quadrature rule
     )
+    #endif // std>c++17
     {
+      std::cout<<"Matrix called"<<std::endl;
       typedef detail::basis_evaluation_traits<MatrixFamily<BasisType, N>, BasisFunction> traits;
 
       boost::multi_array<typename traits::ReturnValue, 2>

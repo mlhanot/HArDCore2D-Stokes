@@ -126,8 +126,8 @@ private:
 
 };
 
-inline size_t TestCaseTransient::get_deg_diff() { return _deg_diff; };
-inline double TestCaseTransient::get_lambda() { return _lambda; };
+inline size_t TestCaseTransient::get_deg_diff() { return _deg_diff; }
+inline double TestCaseTransient::get_lambda() { return _lambda; }
 
 //@}
 

@@ -134,8 +134,8 @@ private:
 
 };
 
-inline size_t TestCaseStefanPME::get_deg_diff() { return _deg_diff; };
-inline double TestCaseStefanPME::get_lambda() { return _lambda; };
+inline size_t TestCaseStefanPME::get_deg_diff() { return _deg_diff; }
+inline double TestCaseStefanPME::get_lambda() { return _lambda; }
 
 //@}
 
