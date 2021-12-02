@@ -1,3 +1,7 @@
+# HArDCore2D-Stokes
+This fork includes support for the Stokes complex. 
+It was designed with minimal modification to the original.
+
 # HArDCore2D
 Hybrid Arbitrary Degree::Core 2D - Library to implement numerical schemes with edge and cell polynomial unknowns on generic 2D polygonal meshes.
 
